@@ -9,9 +9,10 @@ import {
 	Scripts,
 	ScrollRestoration,
 } from '@remix-run/react'
+import resetCssUrl from '@unocss/reset/tailwind.css'
 import { ExternalScripts } from 'remix-utils'
 
-import resetCssUrl from '@unocss/reset/normalize.css'
+import HeaderNav from '~/components/headerNav'
 import unoCssUrl from '~/styles/uno.css'
 import textCssUrl from '~/styles/typo.css'
 import globalStyles from './styles/global.css'

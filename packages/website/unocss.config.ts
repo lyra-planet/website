@@ -26,7 +26,5 @@ export default defineConfig({
 		presetDaisy(),
 		presetHeroPatterns(),
 	],
-	shortcuts: [
-		
-	],
+	shortcuts: [],
 })

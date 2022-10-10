@@ -13,10 +13,10 @@ import resetCssUrl from '@unocss/reset/tailwind.css'
 import { ExternalScripts } from 'remix-utils'
 
 import HeaderNav from '~/components/headerNav'
-import unoCssUrl from '~/styles/uno.css'
 import textCssUrl from '~/styles/typo.css'
+import unoCssUrl from '~/styles/uno.css'
+
 import globalStyles from './styles/global.css'
-import HeaderNav from './components/headerNav'
 
 export const links: LinksFunction = () => {
 	return [
@@ -32,8 +32,8 @@ export const links: LinksFunction = () => {
 			rel: 'stylesheet',
 			href: globalStyles,
 		},
-		{ 	rel: "stylesheet",
-		 	href: textCssUrl 
+		{ 	rel: 'stylesheet',
+			href: textCssUrl 
 		}
 	]
 }
@@ -45,7 +45,7 @@ export const meta: MetaFunction = () => ({
 })
 export const handle = {
 	breadcrumb: () => <Link to="/">IO-Club</Link>,
-  };
+}
 export default function App() {
 	return (
 		<html lang="en">

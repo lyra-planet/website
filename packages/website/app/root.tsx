@@ -16,7 +16,7 @@ import HeaderNav from '~/components/headerNav'
 import textCssUrl from '~/styles/typo.css'
 import unoCssUrl from '~/styles/uno.css'
 
-import globalStyles from './styles/global.css'
+import rootStyles from './styles/root.css'
 
 export const links: LinksFunction = () => {
 	return [
@@ -30,7 +30,7 @@ export const links: LinksFunction = () => {
 		},
 		{
 			rel: 'stylesheet',
-			href: globalStyles,
+			href: rootStyles,
 		},
 		{ 	rel: 'stylesheet',
 			href: textCssUrl 

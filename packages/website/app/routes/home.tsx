@@ -1,4 +1,3 @@
-
 import type {
 	LinksFunction,
 	LoaderFunction,

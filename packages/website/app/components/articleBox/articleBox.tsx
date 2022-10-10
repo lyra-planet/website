@@ -1,7 +1,6 @@
 import type { IArticleBox } from '../../types/articleBox'
 
 import { Link } from '@remix-run/react'
-import { AiFillCalendar, AiFillDatabase, AiFillHeart } from 'react-icons/ai'
 
 import AvatarUrl from '../../temporary/avatar.jpg'
 
@@ -25,20 +24,20 @@ export const ArticleBox = ({ data }: { data:IArticleBox }) => {
 			<div className="bottom" w-grid="~ cols-[30%70%]">
 				<div className="left">
 					<ul>
-						<li className="avatar">
+						<li className="avatar" w-h='90px'>
 							<img w-border="rounded-full" w-w="80px" src={AvatarUrl} alt="avatar" />
 						</li>
-						<li className="createTime align-middle " w-display="block"  w-h="30px">
-							<AiFillCalendar />
-              Create:{(data?.createTime as unknown as string).match(/^\d{4}-\d{1,2}-\d{1,2}/)}
+						<li className="createTime flex items-center" w-display="block"  w-h="30px">
+							<div className="i-ant-design-user-outlined text-2xl text-gray-400 inline-block" />
+							Create:{(data?.createTime as unknown as string).match(/^\d{4}-\d{1,2}-\d{1,2}/)}
 						</li>
-						<li className="type align-middle">
-							<AiFillDatabase />
-              Type:{data?.type}
+						<li className="type flex items-center">
+							<div className="i-bx-box text-2xl text-gray-400 inline-block" />
+							<div className="inline-block" >Type:{data?.type}</div>
 						</li>
-						<li className="visit align-middle">
-							<AiFillHeart/> 
-              Visitors:100
+						<li className="visit flex items-center">
+							<div className="i-akar-icons-heart text-2xl text-gray-400 inline-block" />
+							Visitors:100
 						</li>
 					</ul>
 				</div>

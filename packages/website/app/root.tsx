@@ -13,6 +13,7 @@ import { ExternalScripts } from 'remix-utils'
 
 import resetCssUrl from '@unocss/reset/normalize.css'
 import unoCssUrl from '~/styles/uno.css'
+import textCssUrl from '~/styles/typo.css'
 import globalStyles from './styles/global.css'
 import HeaderNav from './components/headerNav'
 
@@ -30,6 +31,9 @@ export const links: LinksFunction = () => {
 			rel: 'stylesheet',
 			href: globalStyles,
 		},
+		{ 	rel: "stylesheet",
+		 	href: textCssUrl 
+		}
 	]
 }
 
@@ -48,7 +52,7 @@ export default function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body className="flex min-h-screen" w-flex="col" w-justify='center' w-p="0" w-m="0">
+			<body className="min-h-screen" w-flex="col" w-justify='center' w-p="0" w-m="0">
 				<HeaderNav/>
 				<Outlet />
 				<ScrollRestoration />

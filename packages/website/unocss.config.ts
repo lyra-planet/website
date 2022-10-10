@@ -6,6 +6,9 @@ import presetDaisy from 'unocss-preset-daisy'
 import { presetHeroPatterns } from '@julr/unocss-preset-heropatterns'
 
 export default defineConfig({
+	rules:[
+		['home-top-img',{background: 'url(https://hsiaofongw.notion.site/images/page-cover/rijksmuseum_jansz_1641.jpg) fixed 100%;'}]
+	],
 	transformers: [
 		transformerDirectives(),
 	],
@@ -24,5 +27,6 @@ export default defineConfig({
 		presetHeroPatterns(),
 	],
 	shortcuts: [
+		
 	],
 })

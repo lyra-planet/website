@@ -6,7 +6,18 @@
     grid-template-rows: 20% 80%;
     border-bottom: 2px solid gray;
 }
-
+.slideIn{
+    animation:slideIn 1s ease-in-out 1;
+}
+@keyframes slideIn {
+    0%   {
+        transform: translateY(400px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;}
+}
 .article-h1{
     height: 100px;
     display: inline-block;
@@ -16,9 +27,13 @@
         content: "";
         width: 0%;
         height: 4px;
-        transform: translateY(15px);
+
         background-color: var(--gray);
+
         transition: all 0.3s;
+}
+.article-header:hover{
+    text-decoration: none;
 }
 .article-header:hover::after{
     width: 100%;

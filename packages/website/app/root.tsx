@@ -13,7 +13,6 @@ import resetCssUrl from '@unocss/reset/tailwind.css'
 import { ExternalScripts } from 'remix-utils'
 
 import HeaderNav from '~/components/headerNav'
-import textCssUrl from '~/styles/typo.css'
 import unoCssUrl from '~/styles/uno.css'
 
 import rootStyles from './styles/root.css'
@@ -32,9 +31,6 @@ export const links: LinksFunction = () => {
 			rel: 'stylesheet',
 			href: rootStyles,
 		},
-		{ 	rel: 'stylesheet',
-			href: textCssUrl 
-		}
 	]
 }
 
@@ -53,8 +49,16 @@ export default function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body className="min-h-screen" w-flex="col" w-justify='center' w-p="0" w-m="0">
-				<HeaderNav/>
+			<body
+				className="min-h-screen leading-normal font-thin scrollbar-"
+				w-scrollbar='~ w-0px'
+				w-flex="col"
+				w-justify="center"
+				w-p="0"
+				w-m="0"
+				w-text="#747474"
+			>
+				<HeaderNav />
 				<Outlet />
 				<ScrollRestoration />
 				<ExternalScripts />

@@ -3,9 +3,9 @@
 	"version": "0.1.0",
 	"sideEffects": false,
 	"scripts": {
-		"init-db":"prisma init --datasource-provider sqlite",
-		"init-db:push":"prisma db push",
-		"init-db:seed":"prisma db seed",
+		"init-db": "prisma init --datasource-provider sqlite",
+		"init-db:push": "prisma db push",
+		"init-db:seed": "prisma db seed",
 		"serve": "remix-serve build",
 		"build": "run-s build:*",
 		"build:uno": "unocss \"app/**/*.{tsx,jsx,mdx}\" -c unocss.config.ts -o app/styles/uno.css -m",
@@ -27,18 +27,15 @@
 		"@types/marked": "^4.0.7",
 		"@unocss/preset-mini": "0.45.29",
 		"@unocss/reset": "0.45.29",
-		"animate.css": "^4.1.1",
 		"faunadb": "^4.7.0",
 		"katex": "^0.16.2",
 		"marked": "^4.1.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-icons": "^4.4.0",
 		"react-katex": "^3.0.1",
 		"react-uuid": "^1.0.3",
 		"remix-utils": "^3.3.0",
-		"uuid": "^9.0.0",
-		"wowjs": "^1.1.3"
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"@iconify/json": "^2.1.119",

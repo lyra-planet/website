@@ -1,5 +1,4 @@
 import type {
-	LinksFunction,
 	LoaderFunction,
 	MetaFunction,
 } from '@remix-run/server-runtime'
@@ -10,7 +9,6 @@ import { json } from '@remix-run/server-runtime'
 import {useEffect, useState } from 'react'
 
 import { ArticleBox } from '~/components/articleBox/articleBox'
-import stylesUrl from '~/styles/articleBox.css'
 import { db } from '~/utils/db.server'
 
 export const meta: MetaFunction = () => ({
@@ -43,9 +41,6 @@ const getData = async (articleBoxId = 1) => {
 	return data
 }
 
-export const links: LinksFunction = () => {
-	return [{ rel: 'stylesheet', href: stylesUrl }]
-}
 
 export default function Home() {
 	const fetcher = useFetcher()

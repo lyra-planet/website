@@ -1,6 +1,4 @@
-import type {
-	LinksFunction, 
-	LoaderFunction  } from '@remix-run/server-runtime'
+import type { LoaderFunction  } from '@remix-run/server-runtime'
 import type {  IArticle } from '~/types/articleBox'
 
 import { useLoaderData } from '@remix-run/react'
@@ -8,12 +6,8 @@ import { json } from '@remix-run/server-runtime'
 import { marked } from 'marked'
 import { useEffect } from 'react'
 
-import stylesUrl from '~/styles/typo.css'
 import { db } from '~/utils/db.server'
 
-export const links: LinksFunction = () => {
-	return [{ rel: 'stylesheet', href: stylesUrl }]
-}
 export const loader: LoaderFunction = async ({
 	params,
 }) => {
@@ -48,8 +42,7 @@ export default function ArticlePage() {
 	return (
 		<div w-text="black">
 			<p>{pageData?.title}</p>
-			<div id="article-data-container" w-w="100vw">
-				{/* {pageData?.data} */}
+			<div id="article-data-container" w-w="60vw">
 			</div>
 		</div>
 	)

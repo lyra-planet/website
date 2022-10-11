@@ -7,16 +7,17 @@ import AvatarUrl from '../../temporary/avatar.jpg'
 export const ArticleBox = ({ data }: { data:IArticleBox }) => {
 	return (
 		<div className="article-container slideIn" 
-			data-wow-duration="1s" 
-			data-wow-delay="1s" 
-			data-wow-iteration="1s"
+			w-border-b='2px solid gray'
+			w-mt='20px'
 			w-w="full" 
-			w-h="30vh" 
+			w-h="500px" 
 			w-grid="~ rows-[20%80%]">
 			<div className="top">
-				<h1 className="article-h1" w-display="inline-block after:display-block" w-text="50px" >
+				<h1 className="article-h1" w-display="inline-block after:display-block" w-text="50px" w-h='100px' >
 					{'>'}
-					<Link className="article-header hover:bg-transparent" w-text="50px"  to={`/article/${data?.id}`} >
+					<Link className="article-header hover:bg-transparent hover:decoration-none after:slide-underline hover:after:w-full" 
+						w-text="50px"  
+						to={`/article/${data?.id}`} >
 						{data?.title}
 					</Link>
 				</h1>

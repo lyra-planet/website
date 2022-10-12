@@ -162,7 +162,7 @@ const Demo = function({
 				},
 				{
 					text:'To Home',
-					nevigate:'home'
+					nevigate:'home/1'
 				}
 			]
 			btnList.forEach(({text,nevigate},index)=>{

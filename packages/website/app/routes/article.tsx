@@ -1,7 +1,7 @@
-import { Link, Outlet } from '@remix-run/react'
+import { Outlet } from '@remix-run/react'
 
 export const handle = {
-	breadcrumb: () => <Link to=''>Article</Link>,
+	breadcrumb: () => <div>Article</div>,
 }
 const article = () => {
 	return (

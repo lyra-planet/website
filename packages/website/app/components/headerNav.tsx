@@ -1,5 +1,4 @@
 import { Link, useMatches } from '@remix-run/react'
-import uuid from 'react-uuid'
 
 
 const HeaderNav = () => {
@@ -17,14 +16,14 @@ const HeaderNav = () => {
 				{matches
 					.filter((match) => match.handle && match.handle.breadcrumb)
 					.map((match, index) => (
-						<div className="flex" key={uuid()}>
+						<ul className="flex" key={match.id}>
 							<li>{match.handle?.breadcrumb(match)}</li>
 							{index >= matches.length ? (
 								' '
 							) : (
 								<li className="breadcrumb text-gray-400 justify-center" w-flex='row'>/</li>
 							)}
-						</div>
+						</ul>
 					))}
 			</div>
 			<div className="right flex">

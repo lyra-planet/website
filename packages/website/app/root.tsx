@@ -1,7 +1,6 @@
 import type { LinksFunction, MetaFunction } from '@remix-run/server-runtime'
 
 import {
-	Link,
 	Links,
 	LiveReload,
 	Meta,
@@ -40,7 +39,7 @@ export const meta: MetaFunction = () => ({
 	viewport: 'width=device-width,initial-scale=1',
 })
 export const handle = {
-	breadcrumb: () => <Link to="/">IO-Club</Link>,
+	breadcrumb: () => <div>IO-Club</div>,
 }
 export default function App() {
 	return (
@@ -50,16 +49,19 @@ export default function App() {
 				<Links />
 			</head>
 			<body
-				className="min-h-screen leading-normal font-thin scrollbar-"
+				className="min-h-screen font-normal"
 				w-scrollbar='~ w-0px'
 				w-flex="col"
 				w-justify="center"
 				w-p="0"
 				w-m="0"
-				w-text="#747474"
+				w-text="neutral-500"
+				w-bg="light-50"
 			>
 				<HeaderNav />
-				<Outlet />
+				<main w-flex="grow">
+					<Outlet />
+				</main>
 				<ScrollRestoration />
 				<ExternalScripts />
 				<Scripts />

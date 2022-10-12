@@ -6,46 +6,46 @@ import AvatarUrl from '../../temporary/avatar.jpg'
 
 export const ArticleBox = ({ data }: { data:IArticleBox }) => {
 	return (
-		<div className="article-container slideIn" 
-			w-border-b='2px solid gray'
-			w-mt='20px'
+		<div className=" slideIn" 
+			w-border-b='0.1rem solid gray'
+			w-mt='2rem'
 			w-w="full" 
-			w-h="500px" 
+			w-h="30rem" 
 			w-grid="~ rows-[20%80%]">
-			<div className="top">
-				<h1 className="article-h1" w-display="inline-block after:display-block" w-text="50px" w-h='100px' >
+			<div>
+				<h1 w-display="inline-block after:display-block" w-text="3rem" w-h='10rem' >
 					{'>'}
-					<Link className="article-header hover:bg-transparent hover:decoration-none after:slide-underline hover:after:w-full" 
-						w-text="50px"  
+					<Link w-hover="bg-transparent decoration-none after:w-full" w-after="slide-underline"
+						w-text="3rem"
 						to={`/article/${data?.id}`} >
 						{data?.title}
 					</Link>
 				</h1>
 			</div>
-			<div className="bottom" w-grid="~ cols-[30%70%]">
-				<div className="left">
+			<div w-grid="~ cols-[30%70%]">
+				<div>
 					<ul>
-						<li className="avatar" w-h='90px'>
-							<img w-border="rounded-full" w-w="80px" src={AvatarUrl} alt="avatar" />
+						<li w-h='6rem'>
+							<img w-border="rounded-full" w-w="6rem" src={AvatarUrl} alt="avatar" />
 						</li>
-						<li className="createTime flex items-center" w-display="block"  w-h="30px">
+						<li className="flex items-center"  w-h="2rem">
 							<div className="i-ant-design-user-outlined text-2xl text-gray-400 inline-block" />
 							Create:{(data?.createTime as unknown as string).match(/^\d{4}-\d{1,2}-\d{1,2}/)}
 						</li>
-						<li className="type flex items-center">
+						<li className="flex items-center" w-h="2rem">
 							<div className="i-bx-box text-2xl text-gray-400 inline-block" />
 							<div className="inline-block" >Type:{data?.type}</div>
 						</li>
-						<li className="visit flex items-center">
+						<li className="flex items-center" w-h="2rem">
 							<div className="i-akar-icons-heart text-2xl text-gray-400 inline-block" />
 							Visitors:100
 						</li>
 					</ul>
 				</div>
-				<div className="right">
-					<p w-text="gray-900 20px">
+				<div>
+					<p w-text="gray-800 20px">
 						{data?.content}
-						<Link to={'/'}>Read More</Link>
+						<Link to={`/article/${data?.id}`} >Read More</Link>
 					</p>
 				</div>
 			</div>

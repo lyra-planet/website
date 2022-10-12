@@ -3,7 +3,8 @@
 	"version": "0.1.0",
 	"sideEffects": false,
 	"scripts": {
-		"init-db": "prisma init --datasource-provider sqlite",
+		"init-db": "run-s init-db:*",
+		"init-db:generate": "prisma generate",
 		"init-db:push": "prisma db push",
 		"init-db:seed": "prisma db seed",
 		"serve": "remix-serve build",

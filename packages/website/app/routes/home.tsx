@@ -1,101 +1,89 @@
-import type {
-	LoaderFunction,
-	MetaFunction,
-} from '@remix-run/server-runtime'
+
+import type { MetaFunction } from '@remix-run/server-runtime'
 import type { IArticleBox } from '~/types/articleBox'
 
-import { Link , useFetcher } from '@remix-run/react'
-import { json } from '@remix-run/server-runtime'
-import {useEffect, useState } from 'react'
+import { useFetcher } from '@remix-run/react'
+import { useEffect, useRef, useState } from 'react'
 
 import { ArticleBox } from '~/components/articleBox/articleBox'
-import { db } from '~/utils/db.server'
 
 export const meta: MetaFunction = () => ({
 	title: 'Home',
 })
 
 export const handle = {
-	breadcrumb: () => <Link to="/home">Home</Link>,
+	breadcrumb: () => <div>Home</div>,
 }
-export const loader: LoaderFunction = async ({ request }) => {
-	const index =
-    parseInt(new URL(request.url).searchParams.get('index') as string) || 0
-	const data = await getData(index)
-	return json(data)
-}
-const getData = async (articleBoxId = 1) => {
-	const data: IArticleBox = await db.articleBox.findUnique({
-		where: {
-			id: articleBoxId,
-		},
-		select: {
-			id: true,
-			type:true,
-			name: true,
-			title: true,
-			content: true,
-			createTime: true,
-		},
-	})
-	return data
-}
-
 
 export default function Home() {
 	const fetcher = useFetcher()
-	const [index, setIndex] = useState(0)
+	const [active, setActive] = useState(0)
+	const cursor = useRef(10)
 	const [articleBoxList, setArticleBoxList] = useState<IArticleBox[]>([])
-	const [newData, setNewData] = useState({})
-	const [end,setEnd] = useState(false)
+	const [end, setEnd] = useState(false)
+
+	const sentry = useRef<HTMLDivElement | null>(null)
 	useEffect(() => {
-		fetcher.load(`/home?index=${index}`)
-	}, [index])
-	useEffect(() => {
-		if (fetcher.data == undefined) {
-			setEnd(true)
-			return
-		}
-		setEnd(false)
-		setNewData(fetcher.data)
-		const newArticleBoxList = articleBoxList
-		newArticleBoxList.push(fetcher.data)
-		setArticleBoxList(newArticleBoxList)
-	}, [fetcher.data])
-	useEffect(() => {
-		intersectionObserverFunc()
-	}, [newData])
-	const intersectionObserverFunc = () => {
-		let newIndex = index
-		const articleBoxListSentry = document.querySelector('.article-box-list-sentry') as Element
+		let newActive = active
 		const intersectionObserver = new IntersectionObserver(function (entries) {
 			if (entries[0].intersectionRatio > 0) {
-				newIndex += 1
-				setIndex(newIndex)
-				intersectionObserver.unobserve(articleBoxListSentry)
+				newActive += 1
+				setActive(newActive)
 			}
 		})
-		intersectionObserver.observe(articleBoxListSentry)
-	}
-
+		if (sentry.current) {
+			intersectionObserver.observe(sentry.current)
+		}	
+		return () => {
+			sentry.current = null
+			if (sentry.current) {
+				intersectionObserver.unobserve(sentry.current)
+			}	
+		}
+	}, [])
+	useEffect(() => {
+		if(end===true){
+			return
+		}
+		fetcher.load(`/api/home/${cursor.current}`)
+	}, [active])
+	useEffect(() => {
+		let newData = []
+		if (fetcher.data === undefined) {		
+			return
+		}
+		if (fetcher.data.length === 6) {
+			newData = fetcher.data.slice(0, fetcher.data.length - 1)
+			cursor.current = fetcher.data[5].id
+		} else {
+			setEnd(true)
+			newData = fetcher.data
+		}
+		const newArticleBoxList = articleBoxList.concat(newData)
+		setArticleBoxList(newArticleBoxList)
+	}, [fetcher.data])
+	
 	return (
-		<div className="home-container w-screen  min-h-screen">
-			<div className="top h-3xl w-100vw mb-20 home-top-img ">
-			</div>
+		<div className="w-screen min-h-screen">
+			<div className="h-3xl w-100vw mb-20 home-top-img "></div>
 			<div className="mx-auto mb-300px" w-w="1024px">
 				<h1 w-text="60px">探索IOClub首页</h1>
 				<p>MemberList</p>
 				<div>
 					{articleBoxList &&
-            articleBoxList.map(articleBox=> articleBox&&<ArticleBox key={articleBox.id} data={articleBox}/>)}
+            articleBoxList.map((articleBox) =>articleBox && (<ArticleBox key={articleBox.id} data={articleBox} />)
+            )}
 				</div>
 			</div>
 			<div
-				className="bottom article-box-list-sentry"
+				className="article-box-list-sentry"
+				ref={sentry}
 				w-h="300px"
 				w-text="black center"
 				w-align="middle"
-			>{end?'END':''}</div>
+			>
+				{end ? <div>END</div> : ''}
+			</div>
 		</div>
 	)
 }

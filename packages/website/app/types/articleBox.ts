@@ -16,7 +16,3 @@ export type IArticle = {
 	data:string,
 	createTime:Date,
 }|null
-export type ILoaderData = {
-	articleBoxListData:
-	Array<IArticleBox>
-}

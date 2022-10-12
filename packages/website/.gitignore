@@ -1,6 +1,6 @@
 public/build
 prisma/*.db
 build
-api
+./api
 .cache
 uno.css

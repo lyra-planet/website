@@ -23,12 +23,38 @@ export default function Home() {
 	const [end, setEnd] = useState(false)
 
 	const sentry = useRef<HTMLDivElement | null>(null)
+
+	useEffect(() => {
+		asyncFunc()
+	}, [active])
+	const asyncFunc= async()=>{
+		if(end===true){
+			return
+		}
+		await fetcher.load(`/api/home/${cursor.current}`)
+		if(fetcher.state === 'idle'){
+			let newData = []
+			if (fetcher.data === undefined) {		
+				return
+			}
+			if (fetcher.data.length === 6) {
+				newData = fetcher.data.slice(0, fetcher.data.length - 1)
+				cursor.current = fetcher.data[5].id
+			} else {
+				setEnd(true)
+				newData = fetcher.data
+			}
+			const newArticleBoxList = articleBoxList.concat(newData)
+			setArticleBoxList(newArticleBoxList)
+		}
+	}
 	useEffect(() => {
 		let newActive = active
 		const intersectionObserver = new IntersectionObserver(function (entries) {
 			if (entries[0].intersectionRatio > 0) {
 				newActive += 1
 				setActive(newActive)
+				console.log(fetcher.type)
 			}
 		})
 		if (sentry.current) {
@@ -41,27 +67,6 @@ export default function Home() {
 			}	
 		}
 	}, [])
-	useEffect(() => {
-		if(end===true){
-			return
-		}
-		fetcher.load(`/api/home/${cursor.current}`)
-	}, [active])
-	useEffect(() => {
-		let newData = []
-		if (fetcher.data === undefined) {		
-			return
-		}
-		if (fetcher.data.length === 6) {
-			newData = fetcher.data.slice(0, fetcher.data.length - 1)
-			cursor.current = fetcher.data[5].id
-		} else {
-			setEnd(true)
-			newData = fetcher.data
-		}
-		const newArticleBoxList = articleBoxList.concat(newData)
-		setArticleBoxList(newArticleBoxList)
-	}, [fetcher.data])
 	
 	return (
 		<div className="w-screen min-h-screen">

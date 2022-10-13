@@ -21,18 +21,14 @@ const Home=()=> {
 	const [active, setActive] = useState(0)
 	const cursor = useRef(10)
 	const [articleBoxList, setArticleBoxList] = useState<IArticleBox[]>([])
+	const [newArticleData,setNewArticleData] = useState<IArticleBox[]|null>(null)
 	const [end, setEnd] = useState(false)
 	const sentry = useRef<HTMLDivElement | null>(null)
 	useEffect(() => {
-		asyncFunc()
-	}, [active])
-	const asyncFunc = async()=>{
 		if(end===true){
 			return
 		}
-		await fetcher.load(`/api/home/${cursor.current}`)
-	}
-	useEffect(()=>{
+		fetcher.load(`/api/home/${cursor.current}`)
 		if (fetcher.data === undefined) {		
 			return
 		}
@@ -40,17 +36,22 @@ const Home=()=> {
 			let newData = []	
 			if (fetcher.data.length === 6) {
 				newData = fetcher.data.slice(0, fetcher.data.length - 1)
+				setNewArticleData(newData)
 				cursor.current = fetcher.data[5].id
 			} else {
 				setEnd(true)
 				newData = fetcher.data
 				
 			}
-			const newArticleBoxList = articleBoxList.concat(newData)
+			if(!newArticleData){
+				return
+			}
+			const newArticleBoxList = articleBoxList.concat(newArticleData)
 			setArticleBoxList(newArticleBoxList)
 			fetcher.data = undefined
 		}
-	},[fetcher.data])
+	}, [active])
+
 
 	useEffect(() => {
 		let newActive = active
@@ -71,7 +72,8 @@ const Home=()=> {
 				intersectionObserver.unobserve(sentry.current)
 			}	
 		}
-	}, [])	
+	}, [])
+	
 	return (
 		<div className="w-screen min-h-screen">
 			<div className="h-3xl w-100vw mb-20 home-top-img "></div>

@@ -20,36 +20,37 @@ const Home=()=> {
 	const fetcher = useFetcher()
 	const [active, setActive] = useState(0)
 	const cursor = useRef(10)
-	const [articleBoxList, setArticleBoxList] = useState<IArticleBox[]>([])
+	const articleBoxList= useRef<IArticleBox[]>([])
 	const [newArticleData,setNewArticleData] = useState<IArticleBox[]|null>(null)
 	const [end, setEnd] = useState(false)
 	const sentry = useRef<HTMLDivElement | null>(null)
 	useEffect(() => {
-		if(end===true){
-			return
-		}
-		fetcher.load(`/api/home/${cursor.current}`)
-		if (fetcher.data === undefined) {		
-			return
-		}
-		if(fetcher.type==='done'){
-			let newData = []	
-			if (fetcher.data.length === 6) {
-				newData = fetcher.data.slice(0, fetcher.data.length - 1)
-				setNewArticleData(newData)
-				cursor.current = fetcher.data[5].id
-			} else {
-				setEnd(true)
-				newData = fetcher.data
-				
-			}
-			if(!newArticleData){
+		(async()=>{
+			if(end===true){
 				return
 			}
-			const newArticleBoxList = articleBoxList.concat(newArticleData)
-			setArticleBoxList(newArticleBoxList)
-			fetcher.data = undefined
-		}
+			await fetcher.load(`/api/home/${cursor.current}`)
+			if (fetcher.data === undefined) {		
+				return
+			}
+			if(fetcher.type==='done'){
+				let newData = []	
+				if (fetcher.data.length === 6) {
+					newData = fetcher.data.slice(0, fetcher.data.length - 1)
+					setNewArticleData(newData)
+					cursor.current = fetcher.data[5].id
+				} else {
+					setEnd(true)
+					newData = fetcher.data
+					
+				}
+				if(!newArticleData){
+					return
+				}
+				articleBoxList.current = articleBoxList.current.concat(newArticleData)
+				fetcher.data = undefined
+			}
+		})()
 	}, [active])
 
 
@@ -82,7 +83,7 @@ const Home=()=> {
 				<p>MemberList</p>
 				<div>
 					{articleBoxList &&
-            articleBoxList.map((articleBox) =>articleBox && (<ArticleBox key={articleBox.id} data={articleBox} />)
+            articleBoxList.current.map((articleBox) =>articleBox && (<ArticleBox key={articleBox.id} data={articleBox} />)
             )}
 				</div>
 			</div>

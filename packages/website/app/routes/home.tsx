@@ -48,7 +48,6 @@ const Home=()=> {
 					return
 				}
 				articleBoxList.current = articleBoxList.current.concat(newArticleData)
-				fetcher.data = undefined
 			}
 		})()
 	}, [active])

@@ -16,64 +16,39 @@ export const handle = {
 	breadcrumb: () => <div>Home</div>,
 }
 
-const Home=()=> {
+const Home = () => {
 	const fetcher = useFetcher()
-	const [active, setActive] = useState(0)
-	const cursor = useRef(10)
-	const articleBoxList= useRef<IArticleBox[]>([])
-	const [newArticleData,setNewArticleData] = useState<IArticleBox[]|null>(null)
-	const [end, setEnd] = useState(false)
-	const sentry = useRef<HTMLDivElement | null>(null)
-	useEffect(() => {
-		(async()=>{
-			if(end===true){
-				return
-			}
-			await fetcher.load(`/api/home/${cursor.current}`)
-			if (fetcher.data === undefined) {		
-				return
-			}
-			if(fetcher.type==='done'){
-				let newData = []	
-				if (fetcher.data.length === 6) {
-					newData = fetcher.data.slice(0, fetcher.data.length - 1)
-					setNewArticleData(newData)
-					cursor.current = fetcher.data[5].id
-				} else {
-					setEnd(true)
-					newData = fetcher.data
-					
-				}
-				if(!newArticleData){
-					return
-				}
-				articleBoxList.current = articleBoxList.current.concat(newArticleData)
-			}
-		})()
-	}, [active])
 
+	const offset = useRef(0)
+	const scroll = useRef(null)
+
+	const [more, setMore] = useState(true)
+	const [articles, setArticles] = useState<IArticleBox[]>([])
 
 	useEffect(() => {
-		let newActive = active
-		const intersectionObserver = new IntersectionObserver(function (entries) {
-			if (entries[0].intersectionRatio > 0) {
-				newActive += 1
-				console.log(newActive)
-				setActive(newActive)
-				console.log(fetcher.type)
+		if (fetcher.type === 'done') {
+			if (fetcher.data.length > 0) {
+				setArticles(v => v.concat(fetcher.data))
+				offset.current += fetcher.data.length
+			} else {
+				setMore(false)
 			}
-		})
-		if (sentry.current) {
-			intersectionObserver.observe(sentry.current)
-		}	
-		return () => {
-			sentry.current = null
-			if (sentry.current) {
-				intersectionObserver.unobserve(sentry.current)
-			}	
 		}
-	}, [])
-	
+	}, [fetcher])
+
+	const intersectionObserver = new IntersectionObserver(function(entries) {
+		if (more && ['init', 'done'].some(v => v === fetcher.type) && entries[0].isIntersecting)
+			fetcher.load(`/api/article/${offset.current}`)
+	})
+
+	useEffect(() => {
+		const e = scroll.current
+		if (e) {
+			intersectionObserver.observe(e)
+			return () => intersectionObserver.unobserve(e)
+		}
+	})
+
 	return (
 		<div className="w-screen min-h-screen">
 			<div className="h-3xl w-100vw mb-20 home-top-img "></div>
@@ -81,28 +56,26 @@ const Home=()=> {
 				<h1 w-text="60px">探索IOClub首页</h1>
 				<p>MemberList</p>
 				<div>
-					{articleBoxList &&
-            articleBoxList.current.map((articleBox) =>articleBox && (<ArticleBox key={articleBox.id} data={articleBox} />)
-            )}
+					{articles.map((v, i) => <ArticleBox key={i} data={v} />)}
 				</div>
 			</div>
-			{end ? <div>END</div> : ''}
 			<div
 				className="article-box-list-sentry"
-				ref={sentry}
+				ref={scroll}
 				w-h="300px"
 				w-text="black center"
 				w-align="middle"
 			>
+				{more ? '' : <div>END</div>}
 			</div>
 		</div>
 	)
 }
-const Component=()=>{
+const Component = () => {
 	const isHydrated = useHydrated()
 
 	if (isHydrated) {
-		return <Home/>
+		return <Home />
 	}
 }
 export default Component

@@ -18,7 +18,6 @@ const seed =  async() => {
 
 seed()
 
-
 function getAtricleBoxListData(){
 	return [
 		{   name:'Lyra',

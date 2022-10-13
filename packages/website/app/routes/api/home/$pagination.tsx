@@ -7,6 +7,7 @@ import { db } from '~/utils/db.server'
 export const loader: LoaderFunction = async ({ params }) => {
 	const index = parseInt(params.pagination as string)||0
 	const data = await getData(index)
+	console.log(data)
 	return data
 }
 
@@ -28,6 +29,7 @@ const getData = async (myCursor:number) => {
 			id:'desc'
 		}
 	})
+	
 	return data
 
 }

@@ -4,6 +4,7 @@ import type { IArticleBox } from '~/types/articleBox'
 
 import { useFetcher } from '@remix-run/react'
 import { useEffect, useRef, useState } from 'react'
+import { useHydrated } from 'remix-utils'
 
 import { ArticleBox } from '~/components/articleBox/articleBox'
 
@@ -15,44 +16,48 @@ export const handle = {
 	breadcrumb: () => <div>Home</div>,
 }
 
-export default function Home() {
+const Home=()=> {
 	const fetcher = useFetcher()
 	const [active, setActive] = useState(0)
 	const cursor = useRef(10)
 	const [articleBoxList, setArticleBoxList] = useState<IArticleBox[]>([])
 	const [end, setEnd] = useState(false)
-
 	const sentry = useRef<HTMLDivElement | null>(null)
-
 	useEffect(() => {
 		asyncFunc()
 	}, [active])
-	const asyncFunc= async()=>{
+	const asyncFunc = async()=>{
 		if(end===true){
 			return
 		}
 		await fetcher.load(`/api/home/${cursor.current}`)
-		if(fetcher.state === 'idle'){
-			let newData = []
-			if (fetcher.data === undefined) {		
-				return
-			}
+	}
+	useEffect(()=>{
+		if (fetcher.data === undefined) {		
+			return
+		}
+		if(fetcher.type==='done'){
+			let newData = []	
 			if (fetcher.data.length === 6) {
 				newData = fetcher.data.slice(0, fetcher.data.length - 1)
 				cursor.current = fetcher.data[5].id
 			} else {
 				setEnd(true)
 				newData = fetcher.data
+				
 			}
 			const newArticleBoxList = articleBoxList.concat(newData)
 			setArticleBoxList(newArticleBoxList)
+			fetcher.data = undefined
 		}
-	}
+	},[fetcher.data])
+
 	useEffect(() => {
 		let newActive = active
 		const intersectionObserver = new IntersectionObserver(function (entries) {
 			if (entries[0].intersectionRatio > 0) {
 				newActive += 1
+				console.log(newActive)
 				setActive(newActive)
 				console.log(fetcher.type)
 			}
@@ -66,8 +71,7 @@ export default function Home() {
 				intersectionObserver.unobserve(sentry.current)
 			}	
 		}
-	}, [])
-	
+	}, [])	
 	return (
 		<div className="w-screen min-h-screen">
 			<div className="h-3xl w-100vw mb-20 home-top-img "></div>
@@ -80,6 +84,7 @@ export default function Home() {
             )}
 				</div>
 			</div>
+			{end ? <div>END</div> : ''}
 			<div
 				className="article-box-list-sentry"
 				ref={sentry}
@@ -87,8 +92,15 @@ export default function Home() {
 				w-text="black center"
 				w-align="middle"
 			>
-				{end ? <div>END</div> : ''}
 			</div>
 		</div>
 	)
 }
+const Component=()=>{
+	const isHydrated = useHydrated()
+
+	if (isHydrated) {
+		return <Home/>
+	}
+}
+export default Component

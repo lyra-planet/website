@@ -3,7 +3,7 @@ import type { IArticleBox } from '../../types/articleBox'
 import { Link } from '@remix-run/react'
 import { useEffect,useRef } from 'react'
 
-import AvatarUrl from '../../temporary/avatar.jpg'
+import AvatarUrl from '../../assets/avatar.jpg'
 
 export const ArticleBox = ({ data }: { data:IArticleBox }) => {
 	const box = useRef<HTMLDivElement|null>(null)

@@ -4,7 +4,6 @@ import type { IArticleBox } from '~/types/articleBox'
 
 import { useFetcher } from '@remix-run/react'
 import { useEffect, useRef, useState } from 'react'
-import { useHydrated } from 'remix-utils'
 
 import { ArticleBox } from '~/components/articleBox/articleBox'
 
@@ -13,7 +12,7 @@ export const meta: MetaFunction = () => ({
 })
 
 export const handle = {
-	breadcrumb: () => 'home',
+	breadcrumb: () => 'Home',
 }
 
 const Home = () => {
@@ -66,11 +65,5 @@ const Home = () => {
 		</div>
 	)
 }
-const Component = () => {
-	const isHydrated = useHydrated()
 
-	if (isHydrated) {
-		return <Home />
-	}
-}
-export default Component
+export default Home

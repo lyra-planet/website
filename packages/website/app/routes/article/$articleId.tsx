@@ -4,7 +4,7 @@ import type {  IArticle } from '~/types/articleBox'
 import { useLoaderData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/server-runtime'
 import { getMDXComponent } from 'mdx-bundler/client'
-import { useEffect, useMemo } from 'react'
+import {  useMemo } from 'react'
 
 import { db } from '~/utils/db.server'
 import { getPost } from '~/utils/post'
@@ -17,7 +17,9 @@ type LoaderData = {
 	},
 	articleBox:IArticle
 }
-
+export const handle = {
+	breadcrumb: () => 'Article'
+}
 
 export const loader: LoaderFunction = async ({params}) => {
 	if (!params) throw new Response('Not found', { status: 404 })
@@ -57,13 +59,6 @@ const getData = async (articleBoxId = 1) => {
 export default function ArticlePage() {
 	const {article:{frontmatter,code},articleBox} = useLoaderData<LoaderData>()
 	const Component = useMemo(() => getMDXComponent(code), [code])
-	useEffect(()=>{
-		console.log(frontmatter)
-		const articleDataContainer = document.getElementById('article-data-container')
-		// if(articleDataContainer&&pageData?.data){
-		// 	// articleDataContainer.innerHTML = marked(pageData?.data)
-		// }
-	},[])
 	return (
 		<div w-text="black">
 			<p>{frontmatter.title}</p>

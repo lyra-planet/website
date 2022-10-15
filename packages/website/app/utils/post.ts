@@ -1,7 +1,8 @@
 import haskell from 'highlight.js/lib/languages/haskell'
-import { bundleMDX } from 'mdx-bundler'
 
 import { db } from '~/utils/db.server'
+
+import { bundleMDX } from './mdx.server'
 
 export type Post = {
 	slug: string;

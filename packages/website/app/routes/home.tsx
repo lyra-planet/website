@@ -9,22 +9,19 @@ import { useHydrated } from 'remix-utils'
 import { ArticleBox } from '~/components/articleBox/articleBox'
 
 export const meta: MetaFunction = () => ({
-	title: 'Home',
+	title: 'home',
 })
 
 export const handle = {
-	breadcrumb: () => <div>Home</div>,
+	breadcrumb: () => 'home',
 }
 
 const Home = () => {
 	const fetcher = useFetcher()
-
 	const offset = useRef(0)
 	const scroll = useRef(null)
-
 	const [more, setMore] = useState(true)
 	const [articles, setArticles] = useState<IArticleBox[]>([])
-
 	useEffect(() => {
 		if (fetcher.type === 'done') {
 			if (fetcher.data.length > 0) {
@@ -35,14 +32,12 @@ const Home = () => {
 			}
 		}
 	}, [fetcher])
-
-	const intersectionObserver = new IntersectionObserver(function(entries) {
-		if (more && ['init', 'done'].some(v => v === fetcher.type) && entries[0].isIntersecting)
-			fetcher.load(`/api/article/${offset.current}`)
-	})
-
 	useEffect(() => {
 		const e = scroll.current
+		const intersectionObserver = new IntersectionObserver(function(entries) {
+			if (more && ['init', 'done'].some(v => v === fetcher.type) && entries[0].isIntersecting)
+				fetcher.load(`/api/article/${offset.current}`)
+		})
 		if (e) {
 			intersectionObserver.observe(e)
 			return () => intersectionObserver.unobserve(e)

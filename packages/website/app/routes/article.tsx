@@ -1,7 +1,7 @@
 import { Outlet } from '@remix-run/react'
 
 export const handle = {
-	breadcrumb: () => <div>Article</div>,
+	breadcrumb: () => 'Article'
 }
 const article = () => {
 	return (

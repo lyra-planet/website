@@ -1,13 +1,31 @@
 import type { IArticleBox } from '../../types/articleBox'
 
 import { Link } from '@remix-run/react'
+import { useEffect,useRef } from 'react'
 
 import AvatarUrl from '../../temporary/avatar.jpg'
 
 export const ArticleBox = ({ data }: { data:IArticleBox }) => {
+	const box = useRef<HTMLDivElement|null>(null)
+	useEffect(()=>{	
+		const e = box.current
+		if (e) {
+			const intersectionObserver = new IntersectionObserver(function(entries) {
+				if (entries[0].isIntersecting){
+					e.classList.add('slideIn')
+					intersectionObserver.unobserve(e)
+				}
+			})
+			intersectionObserver.observe(e)
+			return () => intersectionObserver.unobserve(e)
+		}
+	},[])
+
 	return (
-		<div className=" slideIn" 
+		<div
+			ref={box} 
 			w-border-b='0.1rem solid gray'
+			w-transform='translate-y-400px'
 			w-mt='2rem'
 			w-w="full" 
 			w-h="30rem" 
